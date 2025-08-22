@@ -46,8 +46,7 @@ const mockCustomers: Customer[] = [
     address: '123 Business Street, Karachi, Pakistan',
     ntn: '1234567-8',
     province: 'Sindh',
-    status: 'Filer',
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString()
+    status: 'Filer'
   },
   {
     id: 'customer-002',
@@ -57,8 +56,7 @@ const mockCustomers: Customer[] = [
     address: '456 Commerce Road, Lahore, Pakistan',
     ntn: '8765432-1',
     province: 'Punjab',
-    status: 'Non-Filer',
-    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
+    status: 'Non-Filer'
   },
   {
     id: 'customer-003',
@@ -68,8 +66,7 @@ const mockCustomers: Customer[] = [
     address: '789 Innovation Drive, Islamabad, Pakistan',
     ntn: '1122334-5',
     province: 'Federal',
-    status: 'Filer',
-    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+    status: 'Filer'
   }
 ];
 
@@ -82,8 +79,7 @@ const mockProducts: Product[] = [
     unitPrice: 150000,
     hsCode: '8471.30.00',
     rate: '17%',
-    uoM: 'PCS',
-    createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString()
+    uoM: 'PCS'
   },
   {
     id: 'product-002',
@@ -93,8 +89,7 @@ const mockProducts: Product[] = [
     unitPrice: 25000,
     hsCode: '9401.30.00',
     rate: '17%',
-    uoM: 'PCS',
-    createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString()
+    uoM: 'PCS'
   },
   {
     id: 'product-003',
@@ -104,8 +99,7 @@ const mockProducts: Product[] = [
     unitPrice: 50000,
     hsCode: '8523.40.00',
     rate: '17%',
-    uoM: 'LIC',
-    createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString()
+    uoM: 'LIC'
   }
 ];
 
@@ -154,8 +148,7 @@ const mockInvoices: Invoice[] = [
         uoM: 'PCS',
         saleType: 'Local Supply'
       }
-    ],
-    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+    ]
   },
   {
     id: 'INV-2024-002',
@@ -191,8 +184,7 @@ const mockInvoices: Invoice[] = [
         uoM: 'LIC',
         saleType: 'Local Supply'
       }
-    ],
-    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+    ]
   }
 ];
 
@@ -220,9 +212,9 @@ export async function mockExecuteProcedure<T>(procedureName: string, _parameters
 // Mock connection pool
 export const mockPool = {
   request: () => ({
-    input: (name: string, value: unknown) => ({}),
-    query: async (query: string) => ({ recordset: [] }),
-    execute: async (procedure: string) => ({ recordset: [] })
+    input: (_name: string, _value: unknown) => ({}),
+    query: async (_query: string) => ({ recordset: [] }),
+    execute: async (_procedure: string) => ({ recordset: [] })
   }),
   close: async () => {}
 };
