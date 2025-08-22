@@ -1,6 +1,6 @@
 import type { User, Customer, Product, Invoice, LineItem } from './types';
 
-// Mock data for development and testing
+// Mock data for development and testing - Updated for Vercel deployment
 const mockUsers: User[] = [
   {
     id: 'admin-001',
