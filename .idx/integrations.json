@@ -1,0 +1,5 @@
+{
+  "nextjs_hosting": {
+    "deploymentUrl": "https://your-nextjs-app.vercel.app"
+  }
+}
