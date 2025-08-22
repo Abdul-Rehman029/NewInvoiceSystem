@@ -1,246 +1,198 @@
 import type { User, Customer, Product, Invoice, LineItem } from './types';
 
-// Mock data storage with test data
+// Mock data for development and testing
 const mockUsers: User[] = [
   {
-    id: '1',
-    name: 'Admin User',
+    id: 'admin-001',
+    name: 'System Administrator',
     email: 'admin@fbr.gov.pk',
     role: 'admin',
-    registrationDate: new Date().toISOString(),
-    lastLogin: new Date().toISOString(),
-    invoiceCount: 5,
-    paidAmount: 150000,
-    pendingAmount: 75000
-  },
-  {
-    id: '2',
-    name: 'John Doe',
-    email: 'john@example.com',
-    role: 'user',
     registrationDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     lastLogin: new Date().toISOString(),
-    invoiceCount: 3,
-    paidAmount: 85000,
-    pendingAmount: 45000
+    invoiceCount: 0,
+    paidAmount: 0,
+    pendingAmount: 0
   },
   {
-    id: '3',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
+    id: 'user-001',
+    name: 'John Doe',
+    email: 'john.doe@example.com',
     role: 'user',
     registrationDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-    lastLogin: new Date().toISOString(),
-    invoiceCount: 2,
-    paidAmount: 60000,
-    pendingAmount: 30000
+    lastLogin: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    invoiceCount: 5,
+    paidAmount: 150000,
+    pendingAmount: 25000
+  },
+  {
+    id: 'user-002',
+    name: 'Jane Smith',
+    email: 'jane.smith@example.com',
+    role: 'user',
+    registrationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    lastLogin: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    invoiceCount: 3,
+    paidAmount: 75000,
+    pendingAmount: 15000
   }
 ];
 
 const mockCustomers: Customer[] = [
   {
-    id: 'customer_1',
-    userId: '1',
-    name: 'ABC Textiles Ltd',
-    email: 'accounts@abctextiles.com',
-    address: '123 Industrial Area, Karachi',
+    id: 'customer-001',
+    userId: 'user-001',
+    name: 'ABC Corporation',
+    email: 'accounts@abccorp.com',
+    address: '123 Business Street, Karachi, Pakistan',
     ntn: '1234567-8',
     province: 'Sindh',
-    status: 'Registered',
+    status: 'Filer',
     createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    id: 'customer_2',
-    userId: '1',
-    name: 'XYZ Garments',
-    email: 'billing@xyzgarments.com',
-    address: '456 Export Zone, Lahore',
-    ntn: '2345678-9',
+    id: 'customer-002',
+    userId: 'user-001',
+    name: 'XYZ Enterprises',
+    email: 'info@xyzenterprises.com',
+    address: '456 Commerce Road, Lahore, Pakistan',
+    ntn: '8765432-1',
     province: 'Punjab',
-    status: 'Registered',
+    status: 'Non-Filer',
     createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    id: 'customer_3',
-    userId: '1',
-    name: 'Pak Fabrics',
-    email: 'info@pakfabrics.com',
-    address: '789 Textile Street, Faisalabad',
-    ntn: '3456789-0',
-    province: 'Punjab',
-    status: 'Registered',
+    id: 'customer-003',
+    userId: 'user-002',
+    name: 'Tech Solutions Ltd',
+    email: 'admin@techsolutions.pk',
+    address: '789 Innovation Drive, Islamabad, Pakistan',
+    ntn: '1122334-5',
+    province: 'Federal',
+    status: 'Filer',
     createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
   }
 ];
 
 const mockProducts: Product[] = [
   {
-    id: 'product_1',
-    userId: '1',
-    name: 'Premium Cotton Fabric',
-    description: 'High-quality cotton fabric for premium garments',
-    unitPrice: 2500,
-    hsCode: '5208.52',
-    rate: '18%',
-    uoM: 'meters',
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString()
+    id: 'product-001',
+    userId: 'user-001',
+    name: 'Laptop Computer',
+    description: 'High-performance laptop for business use',
+    unitPrice: 150000,
+    hsCode: '8471.30.00',
+    rate: '17%',
+    uoM: 'PCS',
+    createdAt: new Date(Date.now() - 50 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    id: 'product_2',
-    userId: '1',
-    name: 'Polyester Blend',
-    description: 'Durable polyester blend fabric',
-    unitPrice: 1800,
-    hsCode: '5513.11',
-    rate: '18%',
-    uoM: 'meters',
-    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
+    id: 'product-002',
+    userId: 'user-001',
+    name: 'Office Chair',
+    description: 'Ergonomic office chair with adjustable features',
+    unitPrice: 25000,
+    hsCode: '9401.30.00',
+    rate: '17%',
+    uoM: 'PCS',
+    createdAt: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
-    id: 'product_3',
-    userId: '1',
-    name: 'Silk Fabric',
-    description: 'Luxury silk fabric for high-end garments',
-    unitPrice: 8500,
-    hsCode: '5007.20',
-    rate: '18%',
-    uoM: 'meters',
-    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    id: 'product_4',
-    userId: '1',
-    name: 'Denim Fabric',
-    description: 'Heavy-duty denim for jeans and jackets',
-    unitPrice: 3200,
-    hsCode: '5209.42',
-    rate: '18%',
-    uoM: 'meters',
-    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
+    id: 'product-003',
+    userId: 'user-002',
+    name: 'Software License',
+    description: 'Annual software license for business applications',
+    unitPrice: 50000,
+    hsCode: '8523.40.00',
+    rate: '17%',
+    uoM: 'LIC',
+    createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString()
   }
 ];
 
 const mockInvoices: Invoice[] = [
   {
     id: 'INV-2024-001',
-    userId: '1',
-    customerName: 'ABC Textiles Ltd',
-    issueDate: '2024-01-15',
-    dueDate: '2024-02-15',
-    status: 'Paid',
-    amount: 45000,
+    userId: 'user-001',
+    customerName: 'ABC Corporation',
+    issueDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    dueDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    status: 'Pending',
+    amount: 175000,
+    notes: 'Payment due within 30 days',
     seller: {
-      name: 'Pak Textile Solutions',
-      address: '123 Textile Ave, Faisalabad',
-      email: 'billing@paktextile.com',
+      name: 'John Doe Trading Co.',
+      address: '123 Business Street, Karachi, Pakistan',
+      email: 'john.doe@example.com',
       ntn: '1234567-8',
-      province: 'Punjab'
+      province: 'Sindh'
     },
     buyer: {
-      name: 'ABC Textiles Ltd',
-      address: '123 Industrial Area, Karachi',
-      email: 'accounts@abctextiles.com',
+      name: 'ABC Corporation',
+      address: '123 Business Street, Karachi, Pakistan',
+      email: 'accounts@abccorp.com',
       ntn: '1234567-8',
       province: 'Sindh'
     },
     lineItems: [
       {
-        description: 'Premium Cotton Fabric',
-        quantity: 15,
-        unitPrice: 2500,
-        total: 37500,
-        hsCode: '5208.52',
-        rate: '18%',
-        uoM: 'meters',
-        saleType: 'Goods at standard rate'
+        description: 'Laptop Computer',
+        quantity: 1,
+        unitPrice: 150000,
+        total: 150000,
+        hsCode: '8471.30.00',
+        rate: '17%',
+        uoM: 'PCS',
+        saleType: 'Local Supply'
       },
       {
-        description: 'Polyester Blend',
-        quantity: 5,
-        unitPrice: 1800,
-        total: 9000,
-        hsCode: '5513.11',
-        rate: '18%',
-        uoM: 'meters',
-        saleType: 'Goods at standard rate'
+        description: 'Office Chair',
+        quantity: 1,
+        unitPrice: 25000,
+        total: 25000,
+        hsCode: '9401.30.00',
+        rate: '17%',
+        uoM: 'PCS',
+        saleType: 'Local Supply'
       }
     ],
-    notes: 'Thank you for your business!',
-    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
     id: 'INV-2024-002',
-    userId: '1',
-    customerName: 'XYZ Garments',
-    issueDate: '2024-01-20',
-    dueDate: '2024-02-20',
-    status: 'Pending',
-    amount: 68000,
+    userId: 'user-002',
+    customerName: 'Tech Solutions Ltd',
+    issueDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    dueDate: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    status: 'Paid',
+    amount: 50000,
+    notes: 'Payment received',
     seller: {
-      name: 'Pak Textile Solutions',
-      address: '123 Textile Ave, Faisalabad',
-      email: 'billing@paktextile.com',
-      ntn: '1234567-8',
+      name: 'Jane Smith Services',
+      address: '456 Commerce Road, Lahore, Pakistan',
+      email: 'jane.smith@example.com',
+      ntn: '8765432-1',
       province: 'Punjab'
     },
     buyer: {
-      name: 'XYZ Garments',
-      address: '456 Export Zone, Lahore',
-      email: 'billing@xyzgarments.com',
-      ntn: '2345678-9',
-      province: 'Punjab'
+      name: 'Tech Solutions Ltd',
+      address: '789 Innovation Drive, Islamabad, Pakistan',
+      email: 'admin@techsolutions.pk',
+      ntn: '1122334-5',
+      province: 'Federal'
     },
     lineItems: [
       {
-        description: 'Silk Fabric',
-        quantity: 8,
-        unitPrice: 8500,
-        total: 68000,
-        hsCode: '5007.20',
-        rate: '18%',
-        uoM: 'meters',
-        saleType: 'Goods at standard rate'
+        description: 'Software License',
+        quantity: 1,
+        unitPrice: 50000,
+        total: 50000,
+        hsCode: '8523.40.00',
+        rate: '17%',
+        uoM: 'LIC',
+        saleType: 'Local Supply'
       }
     ],
-    notes: 'Premium quality silk fabric',
-    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-  },
-  {
-    id: 'INV-2024-003',
-    userId: '1',
-    customerName: 'Pak Fabrics',
-    issueDate: '2024-02-01',
-    dueDate: '2024-03-01',
-    status: 'Overdue',
-    amount: 32000,
-    seller: {
-      name: 'Pak Textile Solutions',
-      address: '123 Textile Ave, Faisalabad',
-      email: 'billing@paktextile.com',
-      ntn: '1234567-8',
-      province: 'Punjab'
-    },
-    buyer: {
-      name: 'Pak Fabrics',
-      address: '789 Textile Street, Faisalabad',
-      email: 'info@pakfabrics.com',
-      ntn: '3456789-0',
-      province: 'Punjab'
-    },
-    lineItems: [
-      {
-        description: 'Denim Fabric',
-        quantity: 10,
-        unitPrice: 3200,
-        total: 32000,
-        hsCode: '5209.42',
-        rate: '18%',
-        uoM: 'meters',
-        saleType: 'Goods at standard rate'
-      }
-    ],
-    notes: 'Heavy-duty denim for industrial use',
-    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
   }
 ];
 
@@ -267,6 +219,10 @@ export async function mockExecuteProcedure<T>(procedureName: string, _parameters
 
 // Mock connection pool
 export const mockPool = {
-  connect: async () => ({ close: () => {} }),
+  request: () => ({
+    input: (name: string, value: unknown) => ({}),
+    query: async (query: string) => ({ recordset: [] }),
+    execute: async (procedure: string) => ({ recordset: [] })
+  }),
   close: async () => {}
 };
