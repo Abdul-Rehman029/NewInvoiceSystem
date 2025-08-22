@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getPlatformStats } from '../../../../lib/repositories/users';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const stats = await getPlatformStats();
     

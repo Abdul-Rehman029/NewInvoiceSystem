@@ -46,7 +46,7 @@ export async function initializePool(): Promise<sql.ConnectionPool> {
     console.log('To use real SQL Server, ensure Docker is running with:');
     console.log('docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourStrong!Passw0rd" -p 1433:1433 --name sqlserver2022 -d mcr.microsoft.com/mssql/server:2022-latest');
     useMockMode = true;
-    return mockPool as any;
+    return mockPool as unknown as sql.ConnectionPool;
   }
 }
 

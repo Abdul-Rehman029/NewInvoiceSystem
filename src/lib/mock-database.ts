@@ -246,152 +246,23 @@ const mockInvoices: Invoice[] = [
 
 const mockSessions: { [token: string]: { userId: string; expiresAt: Date } } = {};
 
-// Optimized mock database functions (no artificial delays)
+// Mock execute query function
 export async function mockExecuteQuery<T>(query: string, parameters: { [key: string]: unknown } = {}): Promise<{ recordset: T[] }> {
-  // Remove artificial delay for better performance
-  // await new Promise(resolve => setTimeout(resolve, 100));
-
-  if (query.includes('SELECT') && query.includes('Users') && query.includes('Email')) {
-    const email = parameters.email as string;
-    const user = mockUsers.find(u => u.email === email);
-    return { recordset: user ? [user as T] : [] };
-  }
-
-  if (query.includes('SELECT') && query.includes('Users')) {
-    return { recordset: mockUsers as T[] };
-  }
-
-  if (query.includes('SELECT') && query.includes('Customers')) {
-    const userId = parameters.userId as string;
-    if (userId) {
-      const userCustomers = mockCustomers.filter(c => c.userId === userId);
-      return { recordset: userCustomers as T[] };
-    }
-    return { recordset: mockCustomers as T[] };
-  }
-
-  if (query.includes('SELECT') && query.includes('Products')) {
-    const userId = parameters.userId as string;
-    if (userId) {
-      const userProducts = mockProducts.filter(p => p.userId === userId);
-      return { recordset: userProducts as T[] };
-    }
-    return { recordset: mockProducts as T[] };
-  }
-
-  if (query.includes('SELECT') && query.includes('Invoices')) {
-    const userId = parameters.userId as string;
-    if (userId) {
-      const userInvoices = mockInvoices.filter(i => i.userId === userId);
-      return { recordset: userInvoices as T[] };
-    }
-    return { recordset: mockInvoices as T[] };
-  }
-
-  if (query.includes('SELECT') && query.includes('Sessions')) {
-    const token = parameters.token as string;
-    const session = mockSessions[token];
-    return { recordset: session ? [{ userId: session.userId, expiresAt: session.expiresAt } as T] : [] };
-  }
-
-  if (query.includes('INSERT') && query.includes('Users')) {
-    const newUser: User = {
-      id: `user_${Date.now()}`,
-      name: parameters.name as string,
-      email: parameters.email as string,
-      role: parameters.role as 'admin' | 'user',
-      registrationDate: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
-      invoiceCount: 0,
-      paidAmount: 0,
-      pendingAmount: 0
-    };
-    mockUsers.push(newUser);
-    return { recordset: [{ Id: newUser.id } as T] };
-  }
-
-  if (query.includes('INSERT') && query.includes('Sessions')) {
-    const token = parameters.token as string;
-    mockSessions[token] = {
-      userId: parameters.userId as string,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
-    };
-    return { recordset: [] };
-  }
-
-  if (query.includes('INSERT') && query.includes('Customers')) {
-    const newCustomer: Customer = {
-      id: `customer_${Date.now()}`,
-      userId: parameters.userId as string,
-      name: parameters.name as string,
-      email: parameters.email as string || '',
-      address: parameters.address as string,
-      ntn: parameters.ntn as string,
-      province: parameters.province as string,
-      status: parameters.status as 'Registered' | 'Unregistered',
-      createdAt: new Date().toISOString()
-    };
-    mockCustomers.push(newCustomer);
-    return { recordset: [] };
-  }
-
-  if (query.includes('INSERT') && query.includes('Products')) {
-    const newProduct: Product = {
-      id: `product_${Date.now()}`,
-      userId: parameters.userId as string,
-      name: parameters.name as string,
-      description: parameters.description as string || '',
-      unitPrice: parameters.unitPrice as number,
-      hsCode: parameters.hsCode as string,
-      rate: parameters.rate as string,
-      uoM: parameters.uoM as string,
-      createdAt: new Date().toISOString()
-    };
-    mockProducts.push(newProduct);
-    return { recordset: [] };
-  }
-
-  if (query.includes('INSERT') && query.includes('Invoices')) {
-    const newInvoice: Invoice = {
-      id: parameters.id as string,
-      userId: parameters.userId as string,
-      customerName: parameters.customerName as string,
-      issueDate: parameters.issueDate as string,
-      dueDate: parameters.dueDate as string,
-      status: parameters.status as 'Paid' | 'Pending' | 'Overdue',
-      amount: parameters.amount as number,
-      seller: parameters.seller as any,
-      buyer: parameters.buyer as any,
-      lineItems: parameters.lineItems as LineItem[],
-      notes: parameters.notes as string || '',
-      createdAt: new Date().toISOString()
-    };
-    mockInvoices.push(newInvoice);
-    return { recordset: [] };
-  }
-
-  if (query.includes('UPDATE') && query.includes('Users')) {
-    const userId = parameters.userId as string;
-    const user = mockUsers.find(u => u.id === userId);
-    if (user) {
-      user.lastLogin = new Date().toISOString();
-    }
-    return { recordset: [] };
-  }
-
-  if (query.includes('DELETE') && query.includes('Sessions')) {
-    const token = parameters.token as string;
-    delete mockSessions[token];
-    return { recordset: [] };
-  }
-
-  return { recordset: [] };
+  // Simulate database query execution
+  console.log('Mock query:', query);
+  console.log('Mock parameters:', parameters);
+  
+  // Return empty result set for now
+  return { recordset: [] as T[] };
 }
 
-export async function mockExecuteProcedure<T>(procedureName: string, parameters: { [key: string]: unknown } = {}): Promise<{ recordset: T[] }> {
-  // Remove artificial delay for better performance
-  // await new Promise(resolve => setTimeout(resolve, 100));
-  return { recordset: [] };
+// Mock execute procedure function
+export async function mockExecuteProcedure<T>(procedureName: string, _parameters: { [key: string]: unknown } = {}): Promise<{ recordset: T[] }> {
+  // Simulate stored procedure execution
+  console.log('Mock procedure:', procedureName);
+  
+  // Return empty result set for now
+  return { recordset: [] as T[] };
 }
 
 // Mock connection pool

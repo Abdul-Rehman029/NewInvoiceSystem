@@ -1,6 +1,5 @@
 import { executeQuery } from '../database';
 import type { Invoice } from '../types';
-import sql from 'mssql';
 
 export interface InvoiceFilters {
   userId?: string;
